@@ -1,0 +1,20 @@
+<!-- Most Popular -->
+            <div class="p-4 mb-3 bg-light rounded sidebar-widget shadow-sm">
+              <h4 class="fst-italic section-title">
+                <span>Most Popular</span>
+              </h4>
+              <ul class="list-unstyled mb-0 popular-list">
+                {% for post in popular_posts %}
+                <li>
+                  <img src="{{ post.featured_image.url }}"
+                       alt="Popular 1"
+                       width="70"
+                       height="70" />
+                  <div>
+                      <a href="article.html" class="popular-title-link">{{ post.title }}</a>
+                      <p class="popular-description">{{ post.content|truncatechars:50 }}</p>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
