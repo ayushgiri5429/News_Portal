@@ -3,7 +3,7 @@
 <div class="list-group shadow-sm mb-5">
   {% for post in weekly_top_posts %}
   <a
-    href="article.html"
+    href="{% url 'post-detail' post.pk %}"
     class="list-group-item list-group-item-action d-flex gap-3 py-3"
     aria-current="true"
   >
@@ -21,7 +21,7 @@
          {{ post.content|truncatechars:50 }}
         </p>
       </div>
-      <small class="opacity-50 text-nowrap">3d ago</small>
+      <small class="opacity-50 text-nowrap">{{ post.published_at|timesince }} ago</small>
     </div>
   </a>
   {% endfor %}

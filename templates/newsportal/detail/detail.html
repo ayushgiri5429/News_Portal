@@ -1,0 +1,24 @@
+{% extends "newsportal/base.html" %}
+{% block content %}
+  <div class="container mt-4">
+    <div class="row">
+      <!-- Article Content Section -->
+      <div class="col-lg-8">
+        {% include "newsportal/detail/left/post_detail.html" %}
+        {% include "newsportal/detail/left/related_articles.html" %}
+        <!-- Comments Section -->
+        <section class="comments-section mt-5">
+          {% include "newsportal/detail/left/comment_list.html" %}
+          {% include "newsportal/detail/left/comment_form.html" %}
+        </section>
+      </div>
+      <div class="col-lg-4">
+        <div class="position-sticky sticky-sidebar-offset">
+          {% include "newsportal/home/right/most_popular.html" %}
+          {% include "newsportal/home/right/advertisement.html" %}
+          {% include "newsportal/home/right/newsletter.html" %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

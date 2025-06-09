@@ -1,0 +1,26 @@
+{% for post in posts %}
+<!-- News Item 1 -->
+          <div class="card mb-4 shadow-sm news-list-item">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="{{ post.featured_image.url }}"
+                     class="img-fluid rounded-start"
+                     alt="News 1" 
+                     width="300"
+                     height="200"/>
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{ post.title }}</h5>
+                  <p class="card-text">
+                   {{ post.content|truncatechars:200 }}
+                  </p>
+                  <p class="card-text">
+                    <small class="text-muted">Published: {{ post.published_at|date:"F j, Y" }}</small>
+                  </p>
+                  <a href="{% url 'post-detail' post.pk %}" class="btn btn-outline-success btn-sm">Read More</a>
+                </div>
+              </div>
+            </div>
+          </div>
+{% endfor %}

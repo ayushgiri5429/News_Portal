@@ -51,6 +51,52 @@ class Post(TimeStampModel):
     def __str__(self):
         return self.title
 
+class Advertisement(TimeStampModel):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="advertisements/%Y/%m/%d", blank=False)
+
+    def __str__(self):
+        return self.title
+    
+class UserProfile(TimeStampModel):
+    user = models.OneToOneField("auth.User", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="profile_images/%Y/%m/%d", blank=False)
+    address = models.CharField(max_length=200)
+    biography = models.TextField()
+
+    def __str__(self):
+        return self.user.username
+
+class OurTeam(TimeStampModel):
+    name = models.CharField(max_length=100)
+    position = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="team_images/%Y/%m/%d", blank=False)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+    
+class Contact(TimeStampModel):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        ordering = ["created_at"]  # Order by created_at in descending order
+
+
+class Comment(TimeStampModel):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    content = models.TextField()
+
+    def __str__(self):
+        return f"{self.content[:50]} | {self.user.username}"
+    
 
 ## 1 - 1 Relationship
 # 1 user can have 1 profile => 1

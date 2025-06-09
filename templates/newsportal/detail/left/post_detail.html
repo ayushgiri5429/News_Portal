@@ -1,0 +1,54 @@
+<article>
+  <!-- Article Header -->
+  <header class="article-header mb-4">
+    <h1 class="article-title">{{ post.title }}</h1>
+    <div class="article-meta mb-3">
+      <span class="author-profile me-3">
+        <img src="{{ post.author.userprofile.image.url }}"
+             alt="Author"
+             class="rounded-circle"
+             width="30"
+             height="30" />
+        By <a href="#" class="text-decoration-none ms-1">{{ post.author.get_full_name }}</a>
+      </span>
+      <span class="me-3">
+        <i class="bi bi-calendar-event"></i>
+        Published: {{ post.published_at|date:"F j, Y" }}
+      </span>
+      <span class="me-3">
+        <i class="bi bi-eye"></i>
+        Views: {{ post.views_count }}
+      </span>
+      <span class="me-3">
+        <i class="bi bi-folder"></i>
+        Category: <a href="#" class="text-decoration-none ms-1">{{ post.category.name }}</a>
+      </span>
+      <span>
+        <i class="bi bi-tags"></i>
+        Tags:
+        {% for tag in post.tag.all %}
+          <a href="#" class="text-decoration-none">#{{ tag.name }}</a>
+          {% if not forloop.last %},{% endif %}
+        {% endfor %}
+      </span>
+    </div>
+    {% if post.featured_image %}
+      <img src="{{ post.featured_image.url }}"
+           alt="Featured Article Image"
+           class="img-fluid rounded"
+           width="1200"
+           height="500" />
+    {% endif %}
+  </header>
+  <!-- Article Body -->
+  <section class="article-content">
+    {{ post.content|linebreaksbr }}
+  </section>
+  <!-- Article Footer -->
+  <footer class="mt-4 pt-4 border-top">
+    <div class="article-tags">
+      <strong>Tags:</strong>
+      {% for tag in post.tag.all %}<a href="#" class="badge bg-secondary text-white me-1">{{ tag.name }}</a>{% endfor %}
+    </div>
+  </footer>
+</article>
