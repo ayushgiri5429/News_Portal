@@ -1,16 +1,21 @@
 <h3 class="mb-4 section-title">
-  <span>User Comments (3)</span>
+  <span>User Comments ({{ post.comment_set.count }})</span>
 </h3>
 <div class="card p-4 shadow-sm mb-4">
   {% if request.user.is_authenticated %}
     <!-- Comment Form -->
-    <form>
+    <form action="{% url 'comment' %}" method="post">
+      {% csrf_token %}
       <div class="mb-3">
         <label for="commentText" class="form-label">Leave a Comment</label>
+        <input type="hidden" name="post" value="{{ post.id }}">
+        {{ form.content.errors }}
         <textarea class="form-control"
+                  name="content"
                   id="commentText"
                   rows="4"
-                  placeholder="Write your comment here..."></textarea>
+                  placeholder="Write your comment here..."
+                  value="{{ form.content.value|default_if_none:"" }}"></textarea>
       </div>
       <button type="submit" class="btn btn-success">Post Comment</button>
     </form>
