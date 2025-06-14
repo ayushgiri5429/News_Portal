@@ -58,6 +58,14 @@ class Advertisement(TimeStampModel):
     def __str__(self):
         return self.title
     
+
+class Newsletter(TimeStampModel):
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.email
+    
+    
 class UserProfile(TimeStampModel):
     user = models.OneToOneField("auth.User", on_delete=models.CASCADE)
     image = models.ImageField(upload_to="profile_images/%Y/%m/%d", blank=False)
@@ -96,6 +104,7 @@ class Comment(TimeStampModel):
 
     def __str__(self):
         return f"{self.content[:50]} | {self.user.username}"
+    
     
 
 ## 1 - 1 Relationship

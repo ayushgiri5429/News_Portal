@@ -49,11 +49,16 @@
           <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
         </li>
       </ul>
-      <form class="d-flex me-3" role="search">
+      <form class="d-flex me-3"
+            role="search"
+            method="get"
+            action="{% url 'search' %}">
         <input class="form-control form-control-sm me-2"
+               name="query"
                type="search"
                placeholder="Search..."
-               aria-label="Search" />
+               aria-label="Search"
+               value="{{ query }}" />
         <button class="btn btn-outline-success btn-sm" type="submit">
           <i class="bi bi-search"></i>
         </button>

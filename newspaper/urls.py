@@ -12,4 +12,6 @@ urlpatterns = [
     path("about-us/", views.AboutView.as_view(), name="about-us"),
     path("contact/", views.ContactCreateView.as_view(), name="contact"),
     path("comment/", views.CommentView.as_view(), name="comment"),
+    path("newsletter/", views.NewsletterView.as_view(), name="newsletter"),
+    path("search/", views.PostSearchView.as_view(), name="search"),
 ]

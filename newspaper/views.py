@@ -1,11 +1,17 @@
+import re
+import stat
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, View
-from newspaper.forms import CommentForm, ContactForm
+from newspaper.forms import CommentForm, ContactForm, NewsletterForm
 from newspaper.models import Advertisement, Category, Contact, OurTeam, Post, Tag
 from django.contrib.messages.views import SuccessMessageMixin
 from django.utils import timezone
 from datetime import timedelta
+from django.http import JsonResponse
+from django.core.paginator import PageNotAnInteger, Paginator
+from django.db.models import Q
 
 
 # Create your views here.
@@ -169,3 +175,80 @@ class CommentView(View):
                     "advertisement": advertisement,
                 },
             )
+
+
+class NewsletterView(View):
+
+    def post(self, request):
+        is_ajax = request.headers.get("x-requested-with")
+        if is_ajax == "XMLHttpRequest":
+            form = NewsletterForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return JsonResponse(
+                    {
+                        "success": True,
+                        "message": "Successfully subscribed to the newsletter.",
+                    },
+                    status=201,
+                )
+            else:
+                return JsonResponse(
+                    {
+                        "success": False,
+                        "message": "cannot subscribe to the newsletter.",
+                    },
+                    status=400,
+                )
+        else:
+            return JsonResponse(
+                {
+                    "success": False,
+                    "message": "cannot process. Must be an AJAX XMLHttpRequest",
+                },
+                status=400,
+            )
+
+
+class PostSearchView(View):
+    template_name = "newsportal/list/list.html"
+
+    def get(self, request, *args, **kwargs):
+        # query=nepal search => title=nepal or content=nepal
+        print(request.GET)
+        query = request.GET["query"] # nepal => Nepal
+        post_list = Post.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query)
+            & Q(status="active")
+            & Q(published_at__isnull=False)
+        ).order_by(
+            "-published_at"
+        )  # QuerySet => ORM
+
+        # |  => OR
+        # &  => AND
+
+        page = request.GET.get("page", 1)
+        paginate_by = 1
+        paginator = Paginator(post_list, paginate_by) 
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        # pagination end
+
+        popular_posts = Post.objects.filter(
+            published_at__isnull=False, status="active"
+        ).order_by("-published_at")[:5]
+        advertisement = Advertisement.objects.all().order_by("-created_at").first()
+
+        return render(
+            request,
+            self.template_name,
+            {
+                "page_obj": posts,
+                "query": query,
+                "popular_posts": popular_posts,
+                "advertisement": advertisement,
+            },
+        )
