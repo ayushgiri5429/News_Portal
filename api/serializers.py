@@ -65,3 +65,7 @@ class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = "__all__"
+
+
+class PostPublishSerializer(serializers.Serializer):
+    id = serializers.IntegerField()

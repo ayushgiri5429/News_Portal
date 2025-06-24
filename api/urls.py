@@ -36,5 +36,10 @@ urlpatterns = [
         views.DraftDetailView.as_view(),
         name="draft-detail-api",
     ),
+    path(
+        "post-publish/",
+        views.PostPublishViewSet.as_view(),
+        name="post-publish-api",
+    ),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
